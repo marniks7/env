@@ -1,0 +1,6 @@
+FROM opensuse/tumbleweed:latest
+RUN zypper --non-interactive in --no-recommends --force-resolution  \
+    curl \
+    kubectl \
+    helm \
+    && zypper clean -a

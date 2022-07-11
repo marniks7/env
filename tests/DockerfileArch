@@ -1,0 +1,3 @@
+FROM archlinux:latest
+RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
+    pacman -Syu --noconfirm sudo make curl bash-completion make docker yq jq git ncurses zip nano kubectl helm tekton-cli

@@ -1,9 +1,7 @@
 build-env:
 	docker build --network host -t dev-env .
-build-env-test:
-	docker build --network host -t dev-env -f DockerfileTest .
 build-env-buildx:
-	docker buildx build --platform linux/amd64 -t dev-env -f DockerfileTest --progress plain --load .
+	docker buildx build --platform linux/amd64 -t dev-env -f DockerfileBuildx  --progress plain --load .
 run-env:
 	docker run --network host --add-host=host.docker.internal:host-gateway -it \
 		-v ${PWD}:${PWD} \
