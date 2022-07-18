@@ -1,8 +1,5 @@
 #!/bin/bash
 
-k3d cluster delete runner
-k3d cluster delete target
-
-#tekton
-#chaosMesh
-#"$dir"/info.sh
+dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+source "${dir}"/runner/stop.sh
+source "${dir}"/target/stop.sh
