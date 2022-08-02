@@ -1,5 +1,5 @@
 #!/bin/bash
 
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-source "${dir}"/runner/stop.sh
-source "${dir}"/target/stop.sh
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+source "${script_dir}"/runner/stop.sh
+source "${script_dir}"/target/stop.sh

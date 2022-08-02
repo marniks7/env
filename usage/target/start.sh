@@ -5,7 +5,7 @@ chaosMesh() {
   helm repo add chaos-mesh https://charts.chaos-mesh.org
   kubectl create ns chaos-testing
   helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-testing --version 2.2.2 --set dashboard.securityMode=false
-  kubectl apply -f "$dir"/chaos-mesh-rbac.yaml
+  kubectl apply -f "$script_dir"/chaos-mesh-rbac.yaml
 }
 
 createApp() {
@@ -29,6 +29,6 @@ createTarget() {
   createApp
 }
 
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 set -euxo pipefail
 createTarget

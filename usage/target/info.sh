@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-source "${dir}"/api.sh
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+source "${script_dir}"/api.sh
 
 infoChaosMesh

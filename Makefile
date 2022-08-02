@@ -10,12 +10,3 @@ run-env:
 		-v /var/run/docker.sock:/var/run/docker.sock --workdir ${PWD} \
 		--user=$(id -u):$(id -g) \
  		dev-env bash -c './init.sh && bash'
-
-#-------------specifics--------------
-run-env:
-	docker run --network host --add-host=host.docker.internal:host-gateway -it \
-		-v ${PWD}:${PWD} \
-		--mount type=bind,source=${PWD}/.bash_history,target=/root/.bash_history \
-		-v /var/run/docker.sock:/var/run/docker.sock --workdir ${PWD} \
-		--user=$(id -u):$(id -g) \
- 		k3d-env bash -c './other/start.sh'

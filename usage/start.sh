@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
-source "${dir}"/target/start.sh
-source "${dir}"/runner/start.sh
+"${script_dir}"/target/start.sh
+"${script_dir}"/runner/start.sh

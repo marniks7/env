@@ -1,7 +1,7 @@
 #!/bin/bash
 
-dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-source "${dir}"/runner/api.sh
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+source "${script_dir}"/runner/api.sh
 
 changeTerminalTitleRunner
 kubectlSwitchToRunner
