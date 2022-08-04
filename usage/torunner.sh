@@ -5,5 +5,4 @@ source "${script_dir}"/runner/api.sh
 
 changeTerminalTitleRunner
 kubectlSwitchToRunner
-portForwardTektonDashboard
 infoRunner

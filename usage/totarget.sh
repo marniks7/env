@@ -5,6 +5,5 @@ source "${script_dir}"/target/api.sh
 
 changeTerminalTitleTarget
 kubectlSwitchToTarget
-portForwardChaosMeshDashboard
 portForwardApp
 infoTarget
