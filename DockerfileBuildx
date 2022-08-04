@@ -62,7 +62,9 @@ RUN wget -O /tmp/krew.tar.gz https://github.com/kubernetes-sigs/krew/releases/do
     echo "$(cat /tmp/krew.sha256 | awk '{ print $1 }')  /tmp/krew.tar.gz" | sha256sum -c - && \
     tar -zxvf /tmp/krew.tar.gz --directory /tmp && \
     chmod +x /tmp/krew-${KREW_PLATFORM} && \
-    mv /tmp/krew-${KREW_PLATFORM} /tmp/krew
+    mv /tmp/krew-${KREW_PLATFORM} /tmp/krew && \
+    wget -O /tmp/kubectx.bash https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash && \
+    wget -O /tmp/kubens.bash https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash
 
 FROM alpine:3.16 as other
 # tput is required for `krew` and plugins (ncurses contains it)
@@ -98,13 +100,19 @@ RUN chmod +x /usr/local/bin/tkn && \
     kubectl tkn version
 
 COPY --from=krew /tmp/krew /tmp
+COPY --from=krew /tmp/kubectx.bash ~/.kubectx/completion/kubectx.bash
+COPY --from=krew /tmp/kubens.bash ~/.kubectx/completion/kubens.bash
 RUN /tmp/krew install krew && \
     echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >>~/.bashrc && \
     export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH" && \
     kubectl krew version && \
     echo 'source <(kubectl krew completion bash)' >>~/.bashrc && \
     kubectl krew install ctx && \
-    kubectl krew install ns
+    kubectl krew install ns && \
+    COMPDIR=$(pkg-config --variable=completionsdir bash-completion) &&  \
+    ln -sf ~/.kubectx/completion/kubens.bash $COMPDIR/kubens && \
+    ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx && \
+    echo 'export PATH=~/.kubectx:$PATH' >> ~/.bashrc
 
 COPY --from=other /tmp/.kubectl_aliases $HOME
 RUN echo '[ -f $HOME/.kubectl_aliases ] && source ~/.kubectl_aliases' >> ~/.bashrc
