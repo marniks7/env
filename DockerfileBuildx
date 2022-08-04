@@ -100,8 +100,8 @@ RUN chmod +x /usr/local/bin/tkn && \
     kubectl tkn version
 
 COPY --from=krew /tmp/krew /tmp
-COPY --from=krew /tmp/kubectx.bash ~/.kubectx/completion/kubectx.bash
-COPY --from=krew /tmp/kubens.bash ~/.kubectx/completion/kubens.bash
+COPY --from=krew /tmp/kubectx.bash /tmp/kubectx.bash
+COPY --from=krew /tmp/kubens.bash /tmp/kubens.bash
 RUN /tmp/krew install krew && \
     echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >>~/.bashrc && \
     export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH" && \
@@ -109,10 +109,9 @@ RUN /tmp/krew install krew && \
     echo 'source <(kubectl krew completion bash)' >>~/.bashrc && \
     kubectl krew install ctx && \
     kubectl krew install ns && \
-    COMPDIR=$(pkg-config --variable=completionsdir bash-completion) &&  \
-    ln -sf ~/.kubectx/completion/kubens.bash $COMPDIR/kubens && \
-    ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx && \
-    echo 'export PATH=~/.kubectx:$PATH' >> ~/.bashrc
+    COMPDIR=$(pkg-config --variable=completionsdir bash-completion) && \
+    mv /tmp/kubens.bash $COMPDIR && \
+    mv /tmp/kubectx.bash $COMPDIR
 
 COPY --from=other /tmp/.kubectl_aliases $HOME
 RUN echo '[ -f $HOME/.kubectl_aliases ] && source ~/.kubectl_aliases' >> ~/.bashrc
