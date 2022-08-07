@@ -10,6 +10,15 @@ List of Software Installed:
 * Tekton
 * git, make, yq, nano
 
+## Features
+
+1. [x] Autocompletion (whenever present)
+2. [x] Persist bash history
+3. [x] Script on init
+    * for example, merge kubeconfig from k3d
+4. [x] Access to docker inside container
+5. [x] Current directory attached
+
 ## Run
 
 1. Go to the directory where you are going to use it
@@ -29,20 +38,11 @@ docker run --network host --add-host=host.docker.internal:host-gateway -it \
 4. To run with init script add to the end
    ` bash -c './init.sh && bash'`
 
-## Features
-
-1. [x] Autocompletion (whenever present)
-2. [x] Persist bash history
-3. [x] Script on init
-    * for example, merge kubeconfig from k3d
-4. [x] Access to docker inside container
-5. [x] Current directory attached
-
 ## Absent Features
 
-1. [ ] No programming languages installed so far (like python, go, js, java)
-    * And may not be installed there at all because it is what is usually used on local system
-2. [ ] Manual versions update (eg no bot connected)
+1. [ ] No programming languages installed so far (e.g. python, go, js, java)
+    * And may not be installed there at all because it is usually used on local system
+2. [ ] Manual versions update (e.g. no bot connected)
 3. [ ] Impossible to reuse [DockerfileBuildx](DockerfileBuildx) scripts for local system
 
 ## Alternatives
