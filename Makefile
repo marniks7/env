@@ -9,4 +9,4 @@ run-env:
 		--mount type=bind,source=${PWD}/.bash_history,target=/root/.bash_history \
 		-v /var/run/docker.sock:/var/run/docker.sock --workdir ${PWD} \
 		--user=$(id -u):$(id -g) \
- 		dev-env bash -c './init.sh && bash'
+ 		marniks7/dev-env bash -c './init.sh && bash'
