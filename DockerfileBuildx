@@ -8,6 +8,8 @@ ARG TEKTON_CLI_VERSION=0.24.0
 ARG TEKTON_CLI_PLATFORM=Linux_x86_64
 ARG KREW_VERSION=v0.4.3
 ARG KREW_PLATFORM=linux_amd64
+ARG KIND=v0.14.0
+ARG KIND_PLATFORM=linux-amd64
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 # syntax=docker/dockerfile:1.4
 FROM alpine:3.16 as kubectl
@@ -67,18 +69,20 @@ RUN wget -O /tmp/krew.tar.gz https://github.com/kubernetes-sigs/krew/releases/do
     wget -O /tmp/kubens.bash https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash
 
 FROM alpine:3.16 as other
-# tput is required for `krew` and plugins (ncurses contains it)
-# zip is required for sdkman bash file
-RUN apk --no-cache add make curl bash-completion make docker yq jq git ncurses zip nano &&\
-    echo 'source /etc/profile.d/bash_completion.sh' >>~/.bashrc
 # https://github.com/ahmetb/kubectl-aliases
 RUN wget -O /tmp/.kubectl_aliases https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases && \
     echo '[ -f $HOME/.kubectl_aliases ] && source ~/.kubectl_aliases' >> ~/.bashrc
     #echo 'function kubectl() { echo "+ kubectl $@">&2; command kubectl "$@"; }' >> ~/.bashrc
 
+FROM alpine:3.16 as kind
+ARG KIND
+ARG KIND_PLATFORM
+RUN wget -O /usr/local/bin/kind https://kind.sigs.k8s.io/dl/${KIND}/kind-${KIND_PLATFORM} && \
+    chmod +x /usr/local/bin/kind
+
 # syntax=docker/dockerfile:1.4
 FROM alpine:3.16 as final
-RUN apk --no-cache add make curl bash-completion make docker yq jq git ncurses zip nano && \
+RUN apk --no-cache add make curl bash-completion docker yq jq git ncurses zip nano && \
     echo 'source /etc/profile.d/bash_completion.sh' >>~/.bashrc
 
 COPY --from=kubectl /usr/local/bin/kubectl /usr/local/bin
@@ -92,6 +96,9 @@ RUN echo 'source <(helm completion bash)' >>~/.bashrc && \
 
 COPY --from=k3d /usr/local/bin/k3d /usr/local/bin
 RUN echo 'source <(k3d completion bash)' >>~/.bashrc
+
+COPY --from=kind /usr/local/bin/kind /usr/local/bin
+RUN echo 'source <(kind completion bash)' >>~/.bashrc
 
 COPY --from=tekton /usr/local/bin/tkn /usr/local/bin
 RUN chmod +x /usr/local/bin/tkn && \

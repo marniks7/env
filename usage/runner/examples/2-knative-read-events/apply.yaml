@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: eventing-sa
+  namespace: eventing
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: eventing
+  namespace: eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: eventing-binding
+  namespace: eventing
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: eventing
+subjects:
+  - kind: ServiceAccount
+    name: eventing-sa
+    namespace: eventing

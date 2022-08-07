@@ -17,3 +17,8 @@ exit
 ./other/start.sh
 kubectl get pods --namespace chaos-testing -l app.kubernetes.io/instance=chaos-mesh
 kubectl describe pod -n chaos-testing chaos-dashboard-66dd7dfdb9-smtgp 
+exit
+kind 
+exit
+kind version
+exit

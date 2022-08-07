@@ -20,9 +20,10 @@ In case You find this repo useful - the best approach I see is to fork it and mo
 ## Absent Features
 
 1. [ ] No programming languages installed so far (like python, go, js, java)
-   * And may not be installed there at all because it is what is usually used in IDE most of the time
+    * And may not be installed there at all because it is what is usually used in IDE most of the time
 2. [ ] Manual versions update (eg no bot connected)
-3. [ ] Reuse [DockerfileBuildx](DockerfileBuildx) scripts for local system
+3. [ ] Hard \ impossible to reuse [DockerfileBuildx](DockerfileBuildx) scripts for local system (especially if it is not
+   linux-amd64)
 
 ## Alternatives
 
@@ -34,6 +35,7 @@ I didn't try (because of the image size, 20GB+), but they contain all the toolin
 
 ## Thoughts
 
-That [Dockerfile](DockerfileBuildx) looks like too much manual work, so maybe there are other managed distributions which
+That [Dockerfile](DockerfileBuildx) looks like too much manual work, so maybe there are other managed distributions
+which
 provides all the packages. Based on fast check on [packages](https://pkgs.org/) it doesn't look like that.
 Some other options considered: [other base images](tests) doesn't contain everything
