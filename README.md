@@ -47,7 +47,7 @@ docker run --network host --add-host=host.docker.internal:host-gateway -it \
 
 ## Alternatives
 
-I didn't try (because of the image size, 20GB+), but they contain all the tooling.
+I didn't try (because of the image size, 20GB+ compressed, 60GB extracted), but they contain all the tooling.
 
 * Local Github Actions Env Images used in [act](https://github.com/nektos/act)
     - [docker images](https://github.com/catthehacker/docker_images)
@@ -58,4 +58,4 @@ I didn't try (because of the image size, 20GB+), but they contain all the toolin
 That [Dockerfile](DockerfileBuildx) looks like too much manual work, so maybe there are other managed distributions
 which
 provides all the packages. Based on fast check on [packages](https://pkgs.org/) it doesn't look like that.
-Some other options considered: [other base images](tests) doesn't contain everything either
+Some other options considered: [other base images](other) doesn't contain everything either

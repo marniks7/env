@@ -127,5 +127,5 @@ RUN curl -s "https://get.sdkman.io" | bash && \
     echo 'source "$HOME/.sdkman/bin/sdkman-init.sh"' >> ~/.bashrc && \
     chmod +x $HOME/.sdkman/bin/sdkman-init.sh && \
     bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && sdk version"
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
+#RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+#USER appuser
