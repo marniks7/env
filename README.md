@@ -32,7 +32,7 @@ docker run --network host --add-host=host.docker.internal:host-gateway -it \
    --mount type=bind,source=${PWD}/.bash_history,target=/root/.bash_history \
    -v /var/run/docker.sock:/var/run/docker.sock --workdir ${PWD} \
    --user=$(id -u):$(id -g) \
-   marniks7/dev-env
+   marniks7/env
 ```
 
 4. To run with init script add to the end
