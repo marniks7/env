@@ -28,7 +28,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: peterevans/dockerhub-description
+          repository: marniks7/env
       - name: test
         uses: addnab/docker-run-action@v3
         with:
@@ -36,13 +36,18 @@ jobs:
           run: |
             set -e
             kubectl version --client
-            kubectl tkn version
-            tkn version
-            kpt version
-            kind version
-            k3d version
+            k version
             docker version
             yq --version
-            kubectl ns --help
-            kubectl ctx --help
+            jq --version
+            kind version
+            k3d version
+            tkn version
+            kpt version
+            helm version
+
+            kubectl krew version
+            kubectl tkn version
+#            kubectl ns --help
+#            kubectl ctx --help
             

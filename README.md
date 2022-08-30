@@ -35,7 +35,7 @@ docker run --network host --add-host=host.docker.internal:host-gateway -it \
    marniks7/env
 ```
 
-4. To run with init script add to the end
+4. To run with init script add to the end of run command
    ` bash -c './init.sh && bash'`
 
 ## Absent Features
