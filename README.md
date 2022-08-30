@@ -22,21 +22,31 @@ List of Software Installed:
 ## Run
 
 1. Go to the directory where you are going to use it
-2. `touch .bash_history`
-3. Run:
-   (for better experience copy this to `Makefile`)
-
+2. Run simple
 ```
 docker run --network host --add-host=host.docker.internal:host-gateway -it \
-   -v ${PWD}:${PWD} \
-   --mount type=bind,source=${PWD}/.bash_history,target=/root/.bash_history \
-   -v /var/run/docker.sock:/var/run/docker.sock --workdir ${PWD} \
-   --user=$(id -u):$(id -g) \
-   marniks7/env
+   -v ${PWD}:${PWD} --workdir ${PWD} \
+   -v /var/run/docker.sock:/var/run/docker.sock \
+   marniks7/env bash
 ```
 
-4. To run with init script add to the end of run command
-   ` bash -c './init.sh && bash'`
+## Preserving bash history
+```
+touch .bash_history && docker run --network host --add-host=host.docker.internal:host-gateway -it \
+   -v ${PWD}:${PWD} --workdir ${PWD} \
+   --mount type=bind,source=${PWD}/.bash_history,target=/root/.bash_history \
+   -v /var/run/docker.sock:/var/run/docker.sock \
+   marniks7/env bash
+```
+
+## Run with local script
+To run with init script, like [init.sh](init.sh), add to the end of the run command ` bash -c './init.sh && bash'`, result:
+```
+docker run --network host --add-host=host.docker.internal:host-gateway -it \
+   -v ${PWD}:${PWD} --workdir ${PWD} \
+   -v /var/run/docker.sock:/var/run/docker.sock \
+   marniks7/env bash -c './init.sh && bash'
+```
 
 ## Absent Features
 
@@ -60,7 +70,7 @@ I didn't try (because of the image size, 20GB+ compressed, 60GB extracted), but 
 
 ## Thoughts
 
-That [Dockerfile](DockerfileBuildx) looks like too much manual work, so maybe there are other managed distributions
+That [Dockerfile](Dockerfile) looks like too much manual work, so maybe there are other managed distributions
 which
 provides all the packages. Based on fast check on [packages](https://pkgs.org/) it doesn't look like that.
 Some other options considered: [other base images](other) doesn't contain everything either
