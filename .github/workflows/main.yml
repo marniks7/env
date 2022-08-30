@@ -53,9 +53,6 @@ jobs:
           run: |
             set -e
             kubectl version --client
-            shopt -s expand_aliases
-            source ~/.bashrc
-            k version
             docker version
             yq --version
             jq --version
@@ -67,6 +64,7 @@ jobs:
 
             kubectl krew version
             kubectl tkn version
-            #            kubectl ns --help
-            #            kubectl ctx --help
+            # kubectl ns --help
+            # kubectl ctx --help
+            # k version --client
             
