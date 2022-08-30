@@ -54,6 +54,8 @@ jobs:
           run: |
             set -e
             kubectl version --client
+            shopt -s expand_aliases
+            source ~/.bashrc
             k version
             docker version
             yq --version
