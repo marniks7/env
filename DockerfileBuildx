@@ -8,8 +8,10 @@ ARG TEKTON_CLI_VERSION=0.24.0
 ARG TEKTON_CLI_PLATFORM=Linux_x86_64
 ARG KREW_VERSION=v0.4.3
 ARG KREW_PLATFORM=linux_amd64
-ARG KIND=v0.14.0
+ARG KIND_VERSION=v0.14.0
 ARG KIND_PLATFORM=linux-amd64
+ARG KPT_VERSION=v1.0.0-beta.19
+ARG KPT_PLATFORM=linux_amd64
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 # syntax=docker/dockerfile:1.4
 FROM alpine:3.16 as kubectl
@@ -75,10 +77,16 @@ RUN wget -O /tmp/.kubectl_aliases https://raw.githubusercontent.com/ahmetb/kubec
     #echo 'function kubectl() { echo "+ kubectl $@">&2; command kubectl "$@"; }' >> ~/.bashrc
 
 FROM alpine:3.16 as kind
-ARG KIND
+ARG KIND_VERSION
 ARG KIND_PLATFORM
-RUN wget -O /usr/local/bin/kind https://kind.sigs.k8s.io/dl/${KIND}/kind-${KIND_PLATFORM} && \
+RUN wget -O /usr/local/bin/kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-${KIND_PLATFORM} && \
     chmod +x /usr/local/bin/kind
+
+FROM alpine:3.16 as kpt
+ARG KPT_VERSION
+ARG KPT_PLATFORM
+RUN wget -O /usr/local/bin/kpt https://github.com/GoogleContainerTools/kpt/releases/download/${KPT_VERSION}/kpt_${KPT_PLATFORM} && \
+    chmod +x /usr/local/bin/kpt
 
 # syntax=docker/dockerfile:1.4
 FROM alpine:3.16 as final
@@ -86,25 +94,30 @@ RUN apk --no-cache add make curl bash-completion docker yq jq git ncurses zip na
     echo 'source /etc/profile.d/bash_completion.sh' >>~/.bashrc
 
 COPY --from=kubectl /usr/local/bin/kubectl /usr/local/bin
-RUN echo 'source <(kubectl completion bash)' >>~/.bashrc && \
+RUN kubectl version --client && \
+    echo 'source <(kubectl completion bash)' >>~/.bashrc && \
     echo 'alias k=kubectl' >>~/.bashrc && \
     echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
 
 COPY --from=helm /usr/local/bin/helm /usr/local/bin
-RUN echo 'source <(helm completion bash)' >>~/.bashrc && \
-    helm version
+RUN helm version &&\
+    echo 'source <(helm completion bash)' >>~/.bashrc
+
 
 COPY --from=k3d /usr/local/bin/k3d /usr/local/bin
-RUN echo 'source <(k3d completion bash)' >>~/.bashrc
+RUN k3d version && \
+    echo 'source <(k3d completion bash)' >>~/.bashrc
 
 COPY --from=kind /usr/local/bin/kind /usr/local/bin
-RUN echo 'source <(kind completion bash)' >>~/.bashrc
+RUN kind version &&\
+    echo 'source <(kind completion bash)' >>~/.bashrc
 
 COPY --from=tekton /usr/local/bin/tkn /usr/local/bin
 RUN chmod +x /usr/local/bin/tkn && \
     tkn version && \
     ln -s /usr/local/bin/tkn /usr/local/bin/kubectl-tkn && \
-    kubectl tkn version
+    kubectl tkn version &&\
+    echo 'source <(tkn completion bash)' >>~/.bashrc
 
 COPY --from=krew /tmp/krew /tmp
 COPY --from=krew /tmp/kubectx.bash /tmp/kubectx.bash
@@ -127,5 +140,9 @@ RUN curl -s "https://get.sdkman.io" | bash && \
     echo 'source "$HOME/.sdkman/bin/sdkman-init.sh"' >> ~/.bashrc && \
     chmod +x $HOME/.sdkman/bin/sdkman-init.sh && \
     bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && sdk version"
+COPY --from=kpt /usr/local/bin/kpt /usr/local/bin
+RUN kpt version &&\
+    echo 'source <(kpt completion bash)' >>~/.bashrc
+
 #RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 #USER appuser

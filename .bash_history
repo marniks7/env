@@ -22,3 +22,15 @@ kind
 exit
 kind version
 exit
+tkn
+tkn completion
+tkn completion bash
+exit
+kpt version
+kubectl ns
+kubectl ctx 
+kind version
+kubectl version
+kubectl version --client
+docker version
+exit

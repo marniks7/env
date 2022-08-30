@@ -7,7 +7,7 @@ List of Software Installed:
 
 * Docker
 * Kind, K3d, Kubectl, Krew, Helm
-* Tekton
+* Tekton, Kpt
 * git, make, yq, nano
 
 ## Features
@@ -43,7 +43,12 @@ docker run --network host --add-host=host.docker.internal:host-gateway -it \
 1. [ ] No programming languages installed so far (e.g. python, go, js, java)
     * And may not be installed there at all because it is usually used on local system
 2. [ ] Manual versions update (e.g. no bot connected)
-3. [ ] Impossible to reuse [DockerfileBuildx](DockerfileBuildx) scripts for local system
+3. [ ] Impossible to reuse [DockerfileBuildx](DockerfileBuildx) scripts for local system.
+   See [Local System Analyze](docs/local-system.md)
+4. [ ] SElinux docs
+5. [ ] WSL docs
+6. [ ] Non-privileged docker image
+7. [ ] CI option
 
 ## Alternatives
 
