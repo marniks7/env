@@ -9,21 +9,34 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      -
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
           tags: marniks7/env:latest
+      - name: test
+        uses: addnab/docker-run-action@v3
+        with:
+          image: marniks7/env:latest
+          run: |
+            set -e
+            kubectl version --client
+            kubectl tkn version
+            tkn version
+            kpt version
+            kind version
+            k3d version
+            docker version
+            yq --version
+            kubectl ns --help
+            kubectl ctx --help
+            
