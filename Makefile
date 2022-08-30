@@ -1,7 +1,7 @@
 
 #-------------main--------------
 build-env:
-	docker buildx build --platform linux/amd64 -t marniks7/dev-env -f DockerfileBuildx  --progress plain --load .
+	docker buildx build --platform linux/amd64 -t marniks7/dev-env --progress plain --load .
 run-env:
 	docker run --network host --add-host=host.docker.internal:host-gateway -it \
 		-v ${PWD}:${PWD} \
