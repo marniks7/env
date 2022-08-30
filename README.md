@@ -1,3 +1,5 @@
+[![ci](https://github.com/marniks7/env/actions/workflows/main.yml/badge.svg)](https://github.com/marniks7/env/actions/workflows/main.yml)
+
 # Development Environment
 
 Tired out to download and install applications. Going to use docker container instead.
