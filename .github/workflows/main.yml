@@ -64,8 +64,8 @@ jobs:
             kpt version
             helm version
 
-            kubectl krew version
             kubectl tkn version
+            # kubectl krew version
             # kubectl ns --help
             # kubectl ctx --help
             # k version --client
