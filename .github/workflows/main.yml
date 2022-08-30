@@ -11,6 +11,22 @@ jobs:
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            marniks7/env
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to DockerHub
@@ -22,7 +38,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: marniks7/env:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v3
         with:
@@ -48,6 +65,6 @@ jobs:
 
             kubectl krew version
             kubectl tkn version
-#            kubectl ns --help
-#            kubectl ctx --help
+            #            kubectl ns --help
+            #            kubectl ctx --help
             
