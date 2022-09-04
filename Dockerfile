@@ -12,6 +12,8 @@ ARG KIND_VERSION=v0.14.0
 ARG KIND_PLATFORM=linux-amd64
 ARG KPT_VERSION=v1.0.0-beta.19
 ARG KPT_PLATFORM=linux_amd64
+ARG KUBESEAL_VERSION=0.18.2
+ARG KUBESEAL_PLATFORM=linux-amd64
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 # syntax=docker/dockerfile:1.4
 FROM alpine:3.16 as kubectl
@@ -88,6 +90,14 @@ ARG KPT_PLATFORM
 RUN wget -O /usr/local/bin/kpt https://github.com/GoogleContainerTools/kpt/releases/download/${KPT_VERSION}/kpt_${KPT_PLATFORM} && \
     chmod +x /usr/local/bin/kpt
 
+FROM alpine:3.16 as kubeseal
+ARG KUBESEAL_VERSION
+ARG KUBESEAL_PLATFORM
+RUN wget -O /tmp/kubeseal.tar.gz https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-${KUBESEAL_PLATFORM}.tar.gz && \
+    tar -zxvf /tmp/kubeseal.tar.gz --directory /tmp && \
+    mv /tmp/kubeseal /usr/local/bin/kubeseal && \
+    chmod +x /usr/local/bin/kubeseal
+
 # syntax=docker/dockerfile:1.4
 FROM alpine:3.16 as final
 RUN apk --no-cache add make curl bash-completion docker yq jq git ncurses zip nano && \
@@ -102,7 +112,6 @@ RUN kubectl version --client && \
 COPY --from=helm /usr/local/bin/helm /usr/local/bin
 RUN helm version &&\
     echo 'source <(helm completion bash)' >>~/.bashrc
-
 
 COPY --from=k3d /usr/local/bin/k3d /usr/local/bin
 RUN k3d version && \
@@ -144,5 +153,7 @@ COPY --from=kpt /usr/local/bin/kpt /usr/local/bin
 RUN kpt version &&\
     echo 'source <(kpt completion bash)' >>~/.bashrc
 
+COPY --from=kubeseal /usr/local/bin/kubeseal /usr/local/bin
+RUN kubeseal --version
 #RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 #USER appuser

@@ -63,6 +63,7 @@ jobs:
             tkn version
             kpt version
             helm version
+            kubeseal --version
 
             kubectl tkn version
             # kubectl krew version
