@@ -8,8 +8,9 @@ In case You find this repo useful - the best approach I see is to fork it and mo
 List of Software Installed:
 
 * Docker
-* Kind, K3d, Kubectl, Krew, Helm
-* Tekton, Kpt
+* Kind, K3d
+* Kubectl, Krew, Helm, kubeseal
+* Tekton (tkn), Kpt
 * git, make, yq, nano
 
 ## Features
@@ -20,6 +21,7 @@ List of Software Installed:
     * for example, merge kubeconfig from k3d
 4. [x] Access to docker inside container
 5. [x] Current directory attached
+6. [x] Default KUBE_EDITOR is `nano`
 
 ## Run
 

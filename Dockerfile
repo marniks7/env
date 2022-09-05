@@ -155,5 +155,7 @@ RUN kpt version &&\
 
 COPY --from=kubeseal /usr/local/bin/kubeseal /usr/local/bin
 RUN kubeseal --version
+
+RUN echo 'export KUBE_EDITOR=nano' >>~/.bashrc
 #RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 #USER appuser
